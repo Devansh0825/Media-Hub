@@ -1,0 +1,168 @@
+/* General Styling */
+body,
+html {
+  margin: 0;
+  padding: 0;
+  font-family: "Arial", sans-serif;
+  height: 100%;
+  overflow: hidden;
+}
+
+.cover-page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to right, #1e3c72, #2a5298),
+    url("https://source.unsplash.com/1920x1080/?technology,music");
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  color: #fff;
+  overflow: hidden;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1;
+  pointer-events: none; /* Fix for clickable buttons */
+}
+
+/* Header Styling */
+.header {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.header .logo {
+  width: 120px;
+  margin-bottom: -20px; /* Reduce gap */
+  animation: fadeInDown 1s ease-in-out;
+}
+
+.header h1 {
+  font-size: 3em;
+  font-weight: bold;
+  color: #32cd32; /* Green color */
+  margin: 10px 0;
+  text-shadow: 2px 2px 4px #000;
+  animation: fadeInDown 1s ease-in-out;
+}
+
+.header p {
+  font-size: 1.2em;
+  color: #ffffffcc;
+  margin-top: 5px;
+  animation: fadeIn 1.2s ease-in-out;
+}
+
+/* Feature Slider */
+.features-slider {
+  position: relative;
+  height: 250px;
+  width: 90%;
+  max-width: 500px;
+  margin-bottom: 30px;
+  z-index: 2;
+}
+
+.card {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  border: 2px solid #fff;
+  color: #fff;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: all 0.8s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.card h2 {
+  font-size: 1.8em;
+  margin-bottom: 10px;
+  text-shadow: 1px 1px 3px #000;
+}
+
+.card p {
+  font-size: 1.1em;
+  text-align: center;
+  line-height: 1.5em;
+}
+
+.card.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Buttons */
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  z-index: 2;
+}
+
+.btn {
+  text-decoration: none;
+  padding: 12px 25px;
+  z-index: 2;
+  margin-top: 50px;
+  font-size: 1.2em;
+  color: #fff;
+  border-radius: 30px;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.btn-signin {
+  background-color: #007acc;
+}
+
+.btn-signin:hover {
+  background-color: #005b9f;
+  transform: scale(1.05);
+}
+
+.btn-signup {
+  background-color: #28a745;
+}
+
+.btn-signup:hover {
+  background-color: #1e7e34;
+  transform: scale(1.05);
+}
+
+/* Animations */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

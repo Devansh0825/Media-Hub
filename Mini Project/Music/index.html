@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Module</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/1bbd04d1ed.js" crossorigin="anonymous"></script>
+    <style>
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            cursor: pointer; /* Change cursor to pointer for better UX */
+        }
+
+        .dropdown-img {
+            width: 50px; /* Adjust size as necessary */
+            height: 50px; /* Adjust size as necessary */
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="music-player">
+            <nav>
+                <div class="circle" onclick="window.location.href='homepage.html';">
+                    <i class="fa-solid fa-angle-left"></i>
+                </div>
+                <div class="circle" onclick="toggleDropdown()">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+                <div id="dropdown" class="dropdown-content" style="display: none;">
+                    <div class="dropdown-item" onclick="selectSong('/Mini Project/Music/songs/Husn Anuv Jain.mp3', '/Mini Project/Music/songs/Husn-Anuv-Jain-500-500.jpg', 'Husn', 'Anuv Jain')">
+                        <img src="/Mini Project/Music/songs/Husn-Anuv-Jain-500-500.jpg" alt="Husn" class="dropdown-img">
+                        <span>Husn - Anuv Jain</span>
+                    </div>
+                    <div class="dropdown-item" onclick="selectSong('/Mini Project/Music/songs/Ram Siya Ram.mp3', '/Mini Project/Music/songs/ram-siya-ram.jpg','Ram Siya Ram', 'Sachet Tandon, Parampara Tandon')">
+                        <img src="/Mini Project/Music/songs/ram-siya-ram.jpg" alt="Ram Siya Ram" class="dropdown-img">
+                        <span>Ram Siya Ram - Sachet Tandon, Parampara Tandon</span>
+                    </div>
+                    <div class="dropdown-item" onclick="selectSong('/Mini Project/Music/songs/Deva Deva.mp3', '/Mini Project/Music/songs/deva.jpg', 'Deva Deva', 'Arijit Singh')">
+                        <img src="/Mini Project/Music/songs/deva.jpg" alt="Deva Deva" class="dropdown-img">
+                        <span>Deva Deva - Arijit Singh</span>
+                    </div>
+                </div>
+            </nav>
+            <img src="/Mini Project/Music/songs/Husn-Anuv-Jain-500-500.jpg" alt="logo" class="song-img">
+            <h1>
+                Husn
+            </h1>
+            <p>
+                Anuv Jain
+            </p>
+
+            <audio id="song"> 
+                <source src="/Mini Project/Music/songs/Husn Anuv Jain.mp3" type="audio/mp3">
+            </audio>
+            <input type="range" value="0" id="progress">
+
+            <div class="controls">
+                <div><i class="fa-solid fa-backward"></i></div>
+                <div onclick="playpause()"><i class="fa-solid fa-play" id="cltrIcon"></i></div>
+                <div><i class="fa-solid fa-forward"></i></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let progress = document.getElementById("progress");
+        let song = document.getElementById("song");
+        let cltrIcon = document.getElementById("cltrIcon");
+
+        song.onloadedmetadata = function(){
+            progress.max = song.duration;
+        }
+
+        function playpause(){
+            if(cltrIcon.classList.contains("fa-play")){
+                song.play();
+                cltrIcon.classList.remove("fa-play");
+                cltrIcon.classList.add("fa-pause");
+            }
+            else{
+                song.pause();
+                cltrIcon.classList.remove("fa-pause");
+                cltrIcon.classList.add("fa-play");
+            }
+        }
+
+        song.ontimeupdate = function(){
+            progress.value = song.currentTime;
+        }
+
+        progress.oninput = function(){
+            song.currentTime = progress.value;
+        }
+
+        progress.onchange = function(){
+            if(song.paused){
+                playpause();
+            }
+        }
+
+        function toggleDropdown() {
+            const dropdown = document.getElementById('dropdown');
+            dropdown.style.display = dropdown .style.display === 'block' ? 'none' : 'block';
+        }
+
+        // Add this function to handle song selection
+        function selectSong(source, image, title, artist) {
+            song.src = source; // Update the audio source
+            song.load(); // Load the new audio source
+            document.querySelector('.song-img').src = image; // Update the image
+            document.querySelector('h1').textContent = title; // Update the song title
+            document.querySelector('p').textContent = artist; // Update the artist name
+            playpause(); // Optionally play the song immediately
+        }
+    </script>
+</body>
+</html>

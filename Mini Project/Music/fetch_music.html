@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Fetcher</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .music-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .music-item {
+            margin: 10px 0;
+        }
+        .error-message {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Music Fetcher</h1>
+    <input type="text" id="search-query" placeholder="Enter song name" />
+    <select id="search-engine">
+        <option value="gaama">Gaama</option>
+        <option value="seevn">Seevn</option>
+        <option value="hunjama">Hunjama</option>
+        <option value="mtmusic">Mtmusic</option>
+        <option value="wunk">Wunk</option>
+    </select>
+    <button id="fetch-music">Fetch Music</button>
+    <ul class="music-list" id="music-list"></ul>
+    <div class="error-message" id="error-message"></div>
+
+    <script>
+        document.getElementById('fetch-music').addEventListener('click', function() {
+            const query = document.getElementById('search-query').value;
+            const searchEngine = document.getElementById('search-engine').value;
+            const errorMessage = document.getElementById('error-message');
+
+            // Clear previous error messages
+            errorMessage.textContent = '';
+
+            if (!query) {
+                errorMessage.textContent = 'Please enter a song name.';
+                return;
+            }
+
+            fetch(`https://musicapi.x007.workers.dev/search?q=${encodeURIComponent(query)}&searchEngine=${searchEngine}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const musicList = document.getElementById('music-list');
+                    musicList.innerHTML = ''; // Clear previous results
+                    if (data.response.length === 0) {
+                        errorMessage.textContent = 'No music found for the given query.';
+                        return;
+                    }
+                    data.response.forEach(music => {
+                        const listItem = document.createElement('li');
+                        listItem.className = 'music-item';
+                        listItem.textContent = music.title;
+
+                        // Create a button to fetch and play the song
+                        const playButton = document.createElement('button');
+                        playButton.textContent = 'Play';
+                        playButton.addEventListener('click', function() {
+                            fetch(`https://musicapi.x007.workers.dev/fetch?id=${music.id}`)
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error('Network response was not ok');
+                                    }
+                                    return response.json();
+                                })
+                                .then(fetchData => {
+                                    const audio = new Audio(fetchData.response);
+                                    audio.play();
+                                })
+                                .catch(error => {
+                                    console.error('Error fetching song:', error);
+                                    errorMessage.textContent = 'Error fetching song. Please try again later.';
+                                });
+                        });
+
+                        // Append the play button to the list item
+                        listItem.appendChild(playButton);
+                        musicList.appendChild(listItem);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching music:', error);
+                    errorMessage.textContent = 'Error fetching music. Please check your internet connection or try again later.';
+                });
+        });
+    </script>
+</body>
+</html>

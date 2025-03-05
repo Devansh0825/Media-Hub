@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player</title>
+    <link href="style_copy.css" rel="stylesheet">
+</head>
+<body>
+    <h1>Online Music Player</h1>
+    <div>
+        <h2>Fetch Music Online</h2>
+        <input type="text" id="musicUrl" placeholder="Enter music URL">
+        <button id="fetchMusic">Fetch Music</button>
+    </div>
+    <div>
+        <h2>Add Local Music</h2>
+        <input type="file" id="localMusic" accept="audio/*">
+        <button id="addLocalMusic">Add Local Music</button>
+    </div>
+    <div id="musicList">
+        <h2>Music List</h2>
+        <ul id="musicItems"></ul>
+    </div>
+    <script>
+        document.getElementById('fetchMusic').addEventListener('click', function() {
+            const url = document.getElementById('musicUrl').value;
+            const musicItems = document.getElementById('musicItems');
+            const listItem = document.createElement('li');
+            listItem.textContent = url;
+            musicItems.appendChild(listItem);
+            // Here you can add code to play the music from the URL
+        });
+
+        document.getElementById('addLocalMusic').addEventListener('click', function() {
+            const fileInput = document.getElementById('localMusic');
+            const musicItems = document.getElementById('musicItems');
+            const files = fileInput.files;
+
+            for (let i = 0; i < files.length; i++) {
+                const listItem = document.createElement('li');
+                listItem.textContent = files[i].name;
+                musicItems.appendChild(listItem);
+                // Here you can add code to play the local music file
+            }
+        });
+    </script>
+</body>
+</html>

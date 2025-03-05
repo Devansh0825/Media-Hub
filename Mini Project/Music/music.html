@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Module</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/1bbd04d1ed.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            background-color: #221a1a; /* Light background color */
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+            width: 300px;
+        }
+
+        .logo {
+            width: 100px;
+            margin-bottom: 20px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .circle {
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            background-color: #e0e0e0;
+        }
+
+        .controls div {
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        select {
+            margin-bottom: 20px;
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .song-img {
+            width: 100%; /* Adjust image size as needed */
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="/Mini Project/MEDIA_HUB-removebg.png" alt="Meda Hub Logo" class="logo"> <!-- Replace with actual logo path -->
+        <nav>
+            <div class="circle" onclick="window.location.href='';"> <!-- Replace with actual homepage URL -->
+                <i class="fa-solid fa-angle-left"></i>
+            </div>
+            <div class="circle">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+        </nav>
+        
+        <select id="musicSelect" onchange="changeMusic()">
+            <option value="Husn Anuv Jain.mp3" data-img="/Mini Project/Music/songs/Husn-Anuv-Jain-500-500.jpg">Husn - Anuv Jain</option>
+            <option value="AnotherSong.mp3" data-img="/path/to/another-song-image.jpg">Another Song - Artist</option>
+            <!-- Add more options as needed -->
+        </select>
+        
+        <img src="/Mini Project/Music/songs/Husn-Anuv-Jain-500-500.jpg" alt="logo" class="song-img" id="songImg">
+        <h1 id="songTitle">Husn</h1>
+        <p id="songArtist">Anuv Jain</p>
+
+        <audio id="song"> 
+            <source src="/Mini Project/Music/songs/Husn Anuv Jain.mp3" type="audio/mp3">
+        </audio>
+        <input type="range" value="0" id="progress">
+
+        <div class="controls">
+            <div><i class="fa-solid fa-backward"></i></div>
+            <div onclick="playpause()"><i class="fa-solid fa-play" id="cltrIcon"></i></div>
+            <div><i class="fa-solid fa-forward"></i></div>
+        </div>
+    </div>
+
+    <script>
+        let progress = document.getElementById("progress");
+        let song = document.getElementById("song");
+        let cltrIcon = document.getElementById("cltrIcon");
+        let musicSelect = document.getElementById("musicSelect");
+        let songImg = document.getElementById("songImg");
+        let songTitle = document.getElementById("songTitle");
+        let songArtist = document.getElementById("songArtist");
+
+        song.onloadedmetadata = function(){
+            progress.max = song.duration;
+        }
+
+        function playpause(){
+            if (song.paused) {
+                song.play();
+                cltrIcon.classList.remove("fa-play");
+                cltrIcon.classList.add("fa-pause");
+            } else {
+                song.pause();
+                cltrIcon.classList.remove("fa-pause");
+                cltrIcon.classList.add("fa-play");
+            }
+        }
+
+        function changeMusic() {
+            const selectedOption = musicSelect.options[musicSelect.selectedIndex];
+            const newSrc = selectedOption.value;
+            const newImg = selectedOption.getAttribute("data-img");
+            const newTitle = selectedOption.text.split(" - ")[0]; // Get the title from the option text
+            const newArtist = selectedOption.text.split(" - ")[1]; // Get the artist from the option text
+
+            song.src = newSrc;
+            songImg.src = newImg;
+            songTitle.textContent = newTitle;
+            songArtist.textContent = newArtist;
+
+            song.load();
+            playpause(); // Automatically play the new song
+        }
+
+        song.ontimeupdate = function() {
+            progress.value = song.currentTime;
+        }
+
+        progress.oninput = function() {
+            song.currentTime = progress.value;
+        }
+    </script>
+</body>
+</html>
